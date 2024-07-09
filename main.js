@@ -45,6 +45,11 @@ document.addEventListener("DOMContentLoaded",function (){
         currentScreen.textContent=previousValue;
         previousScreen.textContent='';
     })
+
+    decimal.addEventListener("click",function(){
+        addDecimal();
+        currentScreen.textContent=currentValue;
+    })
 })
 
 function handleNumber(num){
@@ -87,4 +92,10 @@ function calculate(){
     }
 
     
+}
+
+function addDecimal(){
+    if(!currentValue.includes(".")){
+        currentValue+='.';
+    }
 }
