@@ -42,8 +42,14 @@ document.addEventListener("DOMContentLoaded",function (){
 
     equal.addEventListener("click", function(){
         calculate();
+        if(previousValue.length>=10){
+           previousValue= previousValue.slice(0,10);
+        }
         currentScreen.textContent=previousValue;
         previousScreen.textContent='';
+        previousValue='';
+        operator='';
+        
     })
 
     decimal.addEventListener("click",function(){
@@ -90,11 +96,15 @@ function calculate(){
     else if(operator==="x"){
         previousValue*=currentValue;
     }
-    else {
+    else if(operator==="/") {
         previousValue/=currentValue;
     }
 
-    
+    else{
+        previousValue=currentValue;
+    }
+
+    currentValue='';
 }
 
 function addDecimal(){
