@@ -1,54 +1,58 @@
-let operator= '';
+let operator='';
 let previousValue='';
 let currentValue='';
 
-document.addEventListener("DOMContentLoaded",function (){
+document.addEventListener('DOMContentLoaded',function(){
+    let numbers=document.querySelectorAll(".number");
+    let operators= document.querySelectorAll(".operator");
+    let currentScreen=document.querySelector(".current");
+    let previousScreen=document.querySelector(".previous");
     let clear=document.querySelector(".clear");
     let equal=document.querySelector(".equal");
     let decimal=document.querySelector(".decimal");
 
-    let numbers=document.querySelectorAll(".number");
-    let operators=document.querySelectorAll(".operator");
-
-    let previousScreen=document.querySelector(".previous");
-    let currentScreen= document.querySelector(".current");
-
-    for(let i=0;i<numbers.length; i++){
+    for(let i=0;i<numbers.length;i++){
         numbers[i].addEventListener("click",function(e){
             handleNumber(e.target.textContent);
             currentScreen.textContent=currentValue;
-            
-            
         })
     }
 
     for(let i=0;i<operators.length;i++){
         operators[i].addEventListener("click",function(e){
             handleOperator(e.target.textContent);
-            previousScreen.textContent=previousValue + " " + operator;
+            previousScreen.textContent=previousValue+ " " + operator;
             currentScreen.textContent=currentValue;
-        
-            
         })
     }
 
-    clear.addEventListener("click", function(){
+    clear.addEventListener("click",function(){
         previousValue='';
         currentValue='';
         operator='';
         previousScreen.textContent=previousValue;
-        currentScreen.textContent=currentValue;
+        currentScreen.textContent=previousValue;
     })
 
-    equal.addEventListener("click", function(){
-        calculate();
-        if(previousValue.length>=10){
-           previousValue= previousValue.slice(0,10);
+    equal.addEventListener("click",function(){
+        if(currentValue!='' && previousValue!=''){
+
+            calculate();
+            previousScreen.textContent='';
+            operator='';
+            if(previousValue.length<=10){
+                currentScreen.textContent=previousValue;
+            }
+            else{
+                previousValue=previousValue.slice(0,10) + "...";
+                currentScreen.textContent=previousValue;
+            }
+            currentValue=previousValue;
+            
         }
-        currentScreen.textContent=previousValue;
-        previousScreen.textContent='';
-        previousValue='';
-        operator='';
+
+        
+        
         
     })
 
@@ -56,59 +60,57 @@ document.addEventListener("DOMContentLoaded",function (){
         addDecimal();
         currentScreen.textContent=currentValue;
     })
+
 })
 
 function handleNumber(num){
-        if(currentValue.length<=10){
-            currentValue+=num;
-        }
-
   
+    if(currentValue.length<=10){
+        currentValue+=num;
+    }
 }
+    
 
 function handleOperator(op){
-    if(operator==''){
+    if(operator===''){
         operator=op;
-    previousValue=currentValue;
-    currentValue='';
+        previousValue=currentValue;
+        currentValue='';
     }
     
-    else {
-        if(currentValue!=''){
+ 
 
-            calculate();
-            currentValue='';
-        }
-        operator=op;
-    }
 }
 
 function calculate(){
     previousValue=Number(previousValue);
     currentValue=Number(currentValue);
-
-    if(operator==="+"){
+    if(operator==='+'){
         previousValue+=currentValue;
     }
-    else if(operator==="-"){
+    else if(operator==='-'){
         previousValue-=currentValue;
     }
-    else if(operator==="x"){
+    else if(operator==='x'){
         previousValue*=currentValue;
     }
-    else if(operator==="/") {
+    else if(operator==='/'){
         previousValue/=currentValue;
     }
+    else previousValue=currentValue;
+    
+    previousValue=roundNumber(previousValue);
 
-    else{
-        previousValue=currentValue;
-    }
+    previousValue=previousValue.toString();
+    currentValue=currentValue.toString();
+}
 
-    currentValue='';
+function roundNumber(num){
+    return Math.round(num * 1000)/1000;
 }
 
 function addDecimal(){
-    if(!currentValue.includes(".")){
+    if(!currentValue.includes('.')){
         currentValue+='.';
     }
 }
