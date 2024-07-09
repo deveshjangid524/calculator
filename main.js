@@ -68,9 +68,12 @@ function handleOperator(op){
     }
     
     else {
-        calculate();
+        if(currentValue!=''){
+
+            calculate();
+            currentValue='';
+        }
         operator=op;
-        currentValue='';
     }
 }
 
