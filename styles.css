@@ -50,3 +50,7 @@ body{
 .current{
     font-size: 30px;
 }
+
+.btn:hover{
+    background-color: greenyellow;
+}
